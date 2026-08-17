@@ -50,9 +50,9 @@ header{padding:18px 2px 16px;display:flex;align-items:start;justify-content:spac
     if(scanning)return;
     try{
       scanning=true;$('cameraBox').classList.add('camera-running');$('openCameraBtn').textContent='Câmera aberta — aponte para o código';
-      html5Scanner = new Html5Qrcode('reader', {formatsToSupport:[Html5QrcodeSupportedFormats.EAN_13,Html5QrcodeSupportedFormats.EAN_8,Html5QrcodeSupportedFormats.CODE_128,Html5QrcodeSupportedFormats.CODE_39,Html5QrcodeSupportedFormats.UPC_A,Html5QrcodeSupportedFormats.UPC_E,Html5QrcodeSupportedFormats.ITF,Html5QrcodeSupportedFormats.CODABAR]});
-      await html5Scanner.start({facingMode:{ideal:'environment'}},{fps:10,qrbox:{width:260,height:130},aspectRatio:1.7778,disableFlip:true},code=>{if(!scanning)return;stopCamera();selectCode(code);},()=>{});
-    }catch(e){stopCamera();toast('Não foi possível abrir a câmera. Verifique a permissão no navegador.');}
+      html5Scanner = new Html5Qrcode('reader');
+      await html5Scanner.start({facingMode:'environment'},{fps:8,qrbox:{width:260,height:130},disableFlip:true},code=>{if(!scanning)return;stopCamera();selectCode(code);},()=>{});
+    }catch(e){stopCamera();toast(`Não foi possível abrir a câmera: ${e.name || 'erro do navegador'}.`);}
   }
   function stopCamera(){
     scanning=false;clearTimeout(detectionTimer);$('cameraBox').classList.remove('camera-running');$('openCameraBtn').textContent='Abrir câmera e escanear';
